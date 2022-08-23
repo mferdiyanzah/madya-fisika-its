@@ -17,7 +17,7 @@
 # production
 /build
 
-/prisma
+/prisma/migrations
 
 # misc
 .DS_Store

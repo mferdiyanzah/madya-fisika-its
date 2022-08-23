@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model kelompok {
+  kode      String      @id
+  praktikum praktikum[]
+  praktikan praktikan[]
+}
+
+model praktikan {
+  nrp           String   @unique
+  nama_lengkap  String
+  email         String   @id
+  kode_kelompok String
+  kelompok      kelompok @relation(fields: [kode_kelompok], references: [kode], onDelete: Cascade)
+  nilai         nilai[]
+}
+
+model aslab {
+  kode_aslab           String           @id @unique
+  nama_lengkap         String
+  email                String
+  kontak               String?
+  praktikum            praktikum[]
+  nilai                nilai[]
+}
+
+model daftar_praktikum {
+  kode           String  @id
+  nama_praktikum String
+  modul          String
+  praktikum      praktikum[]
+}
+
+
+model praktikum {
+  id              Int   @id @default(autoincrement())
+  kode_aslab      String
+  aslab           aslab    @relation(fields: [kode_aslab], references: [kode_aslab], onDelete: Cascade)
+  kode_judul_praktikum String
+  judul_praktikum daftar_praktikum @relation(fields: [kode_judul_praktikum], references: [kode])
+  id_sesi         Int?
+  waktu_praktikum sesi?    @relation(fields: [id_sesi], references: [id])
+  minggu          Int?
+  kode_kelompok   String
+  kelompok        kelompok @relation(fields: [kode_kelompok], references: [kode], onDelete: Cascade)
+  nilai           nilai[]
+}
+
+model nilai {
+  id              Int        @id @default(autoincrement())
+  nrp             String
+  praktikan       praktikan? @relation(fields: [nrp], references: [nrp])
+  kode_aslab      String
+  aslab           aslab?     @relation(fields: [kode_aslab], references: [kode_aslab], onDelete: Cascade)
+  id_praktikum    Int
+  praktikum       praktikum? @relation(fields: [id_praktikum], references: [id])
+  prelab          Int        @default(0)
+  inlab           Int        @default(0)
+  abstrak         Int        @default(0)
+  pendahuluan     Int        @default(0)
+  metodologi      Int        @default(0)
+  hasil_diskusi   Int        @default(0)
+  kesimpulan      Int        @default(0)
+  format          Int        @default(0)
+  jawab_post_lab  Int        @default(0)
+  ketepatan_waktu Int        @default(0)
+  nilai_akhir     Float      @default(0)
+}
+
+model sesi {
+  id        Int         @id @default(autoincrement())
+  minggu    Int
+  waktu     DateTime
+  praktikum praktikum[]
+}
