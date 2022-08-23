@@ -37,7 +37,6 @@ export default async function handler(req, res){
                     nilai_akhir: parseFloat(data.nilai_akhir)
                 }
             })        
-            
             res.status(200).json(updateNilai)
         } catch(err){
             console.log(err)
