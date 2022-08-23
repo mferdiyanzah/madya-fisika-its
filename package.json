@@ -1,0 +1,45 @@
+{
+  "name": "madya-fisika-its",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@next-auth/prisma-adapter": "^1.0.4",
+    "@prisma/client": "^4.2.1",
+    "@supabase/supabase-js": "^1.35.6",
+    "axios": "^0.27.2",
+    "bootstrap": "^5.2.0",
+    "express-jwt": "^7.7.5",
+    "form-data": "^4.0.0",
+    "imagekit": "^4.1.1",
+    "imagekitio-react": "^1.1.1",
+    "js-cookie": "^3.0.1",
+    "lodash": "^4.17.21",
+    "next": "12.2.4",
+    "next-auth": "^4.10.3",
+    "next-redux-wrapper": "^7.0.5",
+    "nextjs-progressbar": "^0.0.14",
+    "nodemailer": "^6.7.7",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-hook-form": "^7.34.0",
+    "react-icons": "^4.4.0",
+    "react-redux": "^8.0.2",
+    "react-select": "^5.4.0",
+    "redux": "^4.2.0",
+    "redux-devtools-extension": "^2.13.9",
+    "redux-thunk": "^2.4.1",
+    "rxjs": "^7.5.6",
+    "sweetalert2": "^11.4.26"
+  },
+  "devDependencies": {
+    "eslint": "8.21.0",
+    "eslint-config-next": "12.2.4",
+    "prisma": "^4.2.1"
+  }
+}
