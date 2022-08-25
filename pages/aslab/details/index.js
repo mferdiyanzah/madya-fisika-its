@@ -42,6 +42,9 @@ export const getServerSideProps = async (context) => {
         },
         include: {
             nilai: {
+                orderBy: {
+                    nrp: 'asc'
+                },
                 include: {
                     praktikan: true
                 }
@@ -58,7 +61,11 @@ export const getServerSideProps = async (context) => {
             }
         },
         include: {
-            praktikum: true
+            _count: {
+                select: {
+                    praktikum: true
+                }
+            }
         }
     })
 
@@ -78,16 +85,17 @@ const Detail = ({aslab, praktikum, sesi}) => {
     const {data, status} = useSession()
     const [idSesi, setIdSesi] = useState()
     const [loading, setLoading] = useState(false)
-
+    
     if(!data && status !== 'loading') router.push('/')
     if(!aslab) router.push('/praktikan')
-    
+
     useEffect(() => {
+        const availSession = sesi.filter(s => s._count.praktikum < 3)
         let newOption = []
-        for (let i = 0; i<sesi.length; i++){
+        for (let i = 0; i<availSession.length; i++){
             const newSession = {
                 value: sesi[i].id,
-                label: dateFormat(sesi[i].waktu)
+                label: dateFormat(availSession[i].waktu)
             }
             newOption.push(newSession)
         }
@@ -122,7 +130,6 @@ const Detail = ({aslab, praktikum, sesi}) => {
             })
     }
 
-    
     return (
         <div>
             <Head>
@@ -137,7 +144,7 @@ const Detail = ({aslab, praktikum, sesi}) => {
                 <h2>Kelompok {praktikum.kode_kelompok}</h2>
                 <hr/>
                 <div>
-                    <h5>Jadwal Praktikum:</h5> {praktikum.waktu_praktikum.id === 1 ? <>Anda Belum Mengatur Jadwal <button className='btn btn-primary' onClick={() => setShowJadwal(!showJadwal)}>Atur Sekarang</button></>: dateFormat(praktikum.waktu_praktikum.waktu)}
+                    <h5>Jadwal Praktikum:</h5> {praktikum.id_sesi === 1 ? <>Anda Belum Mengatur Jadwal <button className='btn btn-primary' onClick={() => setShowJadwal(!showJadwal)}>Atur Sekarang</button></>: dateFormat(praktikum.waktu_praktikum.waktu)}
 
                     {showJadwal && 
                         <form className='row' onSubmit={updateSesi}>

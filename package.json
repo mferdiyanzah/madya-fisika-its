@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hookform/error-message": "^2.0.0",
     "@next-auth/prisma-adapter": "^1.0.4",
     "@prisma/client": "^4.2.1",
     "@supabase/supabase-js": "^1.35.6",

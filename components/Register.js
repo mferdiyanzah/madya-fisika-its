@@ -8,11 +8,11 @@ import Swal from 'sweetalert2';
 import { useRouter } from 'next/router';
 import noImage from '../images/no-image-icon.png'
 import ImageKit from 'imagekit';
+import validateSize from '../helpers/validateFile';
 
-const Register = ({ kelompok }) => {
+const Register = ({ praktikan }) => {
     const session = useSession()
     const router = useRouter()
-    const { register, handleSubmit } = useForm()
 
     const [loading, setLoading] = useState(false)
     const [selectedFile, setSelectedFile] = useState()
@@ -24,47 +24,44 @@ const Register = ({ kelompok }) => {
             setPreview(undefined)
             return
         }
-        
         const objectUrl = URL.createObjectURL(selectedFile)
         setPreview(objectUrl)
-        console.log(selectedFile)
         return () => URL.revokeObjectURL(objectUrl)
-        
-
     }, [selectedFile])
 
     const onSelectFile = e => {
-        if (!e.target.files || e.target.files.length === 0) {
-            setSelectedFile(undefined)
-            return
+        if(validateSize(e.target)){
+            if (!e.target.files || e.target.files.length === 0) {
+                setSelectedFile(undefined)
+                return
+            }
+            setSelectedFile(e.target.files[0])
         }
-
-        setSelectedFile(e.target.files[0])
     }
 
 
-    const createNewPraktikan = data =>{
+    const createNewPraktikan = e =>{
         setLoading(true)
-        const email =  session.data.user.email
-        data["email"] = email
-
         const imageKit = new ImageKit({
             urlEndpoint: 'https://ik.imagekit.io/madyafisikaits/',
             publicKey: 'public_bg1FT1zKR6sX5pXdwyl8PkDT9uA=',
             privateKey: process.env.NEXT_PUBLIC_IMAGEKIT
         })
-
         imageKit.upload({
             file: selectedFile,
-            fileName: `${data.nrp}.jpg`,
+            fileName: `${praktikan.nrp}.jpg`,
             useUniqueFileName: false
         })
+        const data = {
+            status: true
+        }
         axios.post('/api/praktikan', data)
             .then(() => {
                 Swal.fire({
                     text: 'Data anda telah sukses terbarui',
                     icon: 'success'
                 })
+                setLoading(false)
                 router.reload()
             })
             .then(err => setLoading(err))
@@ -73,7 +70,7 @@ const Register = ({ kelompok }) => {
     return (
         <div className="container my-4">
             <h4>Silahkan isi data terlebih dahulu</h4>
-            <form className='col-md-4' onSubmit={handleSubmit(createNewPraktikan)}>
+            <form className='col col-md-4' onSubmit={createNewPraktikan}>
                 <div className="my-2">
                     <label htmlFor="nama_lengkap" className="form-label">Email</label>
                     <input className='form-control' value={session.data.user.email} disabled={true} />
@@ -81,27 +78,29 @@ const Register = ({ kelompok }) => {
 
                 <div className="my-2">
                     <label htmlFor="nama_lengkap" className="form-label">Nama Lengkap</label>
-                    <input className='form-control' {...register("nama_lengkap", { required: true })} />
+                    <input className='form-control' value={praktikan.nama_lengkap} disabled={true} />
                 </div>
 
                 <div className="my-2">
                     <label htmlFor="nama_lengkap" className="form-label">NRP</label>
-                    <input className='form-control' type="number" {...register("nrp", { required: true })} />
+                    <input className='form-control' value={praktikan.nrp} disabled="true" />
                 </div>
 
                 <div className="my-2">
-                    <label htmlFor="nama_lengkap" className="form-label">Kode Kelompok</label>
-                    <select className='form-control text-black' {...register("kode_kelompok", { required: true })}>
-                        {kelompok.map((kel, id) => <option value={kel.kode} key={id}>{kel.kode}</option>
-                        )}
-                    </select>
+                    <label htmlFor="nama_lengkap" className="form-label">Kode Kelompok Praktikum Elektronika</label>
+                    <input className='form-control' value={praktikan.praktikan_elka ? praktikan.praktikan_elka.kode_kelompok : '-'} disabled={true} />
+                </div>
+
+                <div className="my-2">
+                    <label htmlFor="nama_lengkap" className="form-label">Kode Kelompok Praktikum Fisika Laboratorium 1</label>
+                    <input className='form-control' value={praktikan.praktikan_fislab ? praktikan.praktikan_fislab.kode_kelompok : '-'} disabled={true} />
                 </div>
 
                 <div className="my-2">
                     <label>Foto Formal 4x6</label>
                     <div className="input-group custom-file-button">
                         <label className="input-group-text" htmlFor="inputGroupFile">Upload file</label>
-                        <input type="file" className="form-control" id="inputGroupFile" onChange={onSelectFile}/>
+                        <input type="file" className="form-control" id="inputGroupFile" onChange={onSelectFile} accept="image/*"/>
                     </div>
                     <div id="emailHelp" className="form-text">Ukuran maksimal 500kb dengan rasio 4x6</div>
                     <div className='image-preview'>

@@ -34,7 +34,9 @@ export default async function handler(req, res){
                     format: parseInt(data.format),
                     jawab_post_lab: parseInt(data.post_lab),
                     ketepatan_waktu: parseInt(data.ketepatan_waktu),
-                    nilai_akhir: parseFloat(data.nilai_akhir)
+                    nilai_akhir: parseFloat(data.nilai_akhir),
+                    prelab: parseInt(data.prelab),
+                    inlab: parseInt(data.inlab)
                 }
             })        
             res.status(200).json(updateNilai)

@@ -10,16 +10,33 @@ datasource db {
 model kelompok {
   kode      String      @id
   praktikum praktikum[]
-  praktikan praktikan[]
+  praktikan_elka praktikan_elka[]
+  praktikan_fislab praktikan_fislab[]
+
 }
 
-model praktikan {
-  nrp           String   @unique
-  nama_lengkap  String
-  email         String   @id
+model praktikan_elka {
+  nrp           Int   @id @unique
+  user          user  @relation(fields: [nrp], references: [nrp], onDelete: Cascade)
   kode_kelompok String
   kelompok      kelompok @relation(fields: [kode_kelompok], references: [kode], onDelete: Cascade)
-  nilai         nilai[]
+}
+
+model praktikan_fislab {
+  nrp           Int   @id @unique
+  user          user  @relation(fields: [nrp], references: [nrp], onDelete: Cascade)
+  kode_kelompok String
+  kelompok      kelompok @relation(fields: [kode_kelompok], references: [kode], onDelete: Cascade)
+}
+
+model user {
+  nrp Int @unique
+  nama_lengkap  String
+  email         String   @id
+  praktikan_elka  praktikan_elka?
+  praktikan_fislab praktikan_fislab?
+  dp_url  Boolean?
+  nilai nilai[]
 }
 
 model aslab {
@@ -55,8 +72,8 @@ model praktikum {
 
 model nilai {
   id              Int        @id @default(autoincrement())
-  nrp             String
-  praktikan       praktikan? @relation(fields: [nrp], references: [nrp])
+  nrp             Int
+  praktikan       user? @relation(fields: [nrp], references: [nrp])
   kode_aslab      String
   aslab           aslab?     @relation(fields: [kode_aslab], references: [kode_aslab], onDelete: Cascade)
   id_praktikum    Int

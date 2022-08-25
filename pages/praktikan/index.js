@@ -15,19 +15,31 @@ export async function getServerSideProps(context){
     const session = await getSession(context)
     const prisma = new PrismaClient()
     const kelompok = await prisma.kelompok.findMany()
-    const praktikan = await prisma.praktikan.findFirst({
+    const praktikan = await prisma.user.findFirst({
         where: {
             email: session?.user.email
         },
         include: {
-            nilai: true
+            nilai: {
+                include: {
+                    aslab: true,
+                    praktikum: {
+                        include: {
+                            judul_praktikum: true,
+                            waktu_praktikum: true
+                        }
+                    }
+                }
+            },
+            praktikan_elka: true,
+            praktikan_fislab: true
         }
     })
     
     
     return {
         props: {
-            praktikan: praktikan,
+            praktikan: JSON.parse(JSON.stringify(praktikan)),
             kelompok: kelompok
         }
     }
@@ -41,6 +53,7 @@ const Index = ({ praktikan, kelompok}) => {
     if (status !== 'loading' && !data){
         router.push('/')
     }
+    console.log(praktikan)
 
     return (
         <div>
@@ -49,8 +62,8 @@ const Index = ({ praktikan, kelompok}) => {
             </Head>
             <Navbar nama_lengkap={praktikan ? praktikan.nama_lengkap : 'N/A'}/>
             
-            {data && !praktikan && <Register kelompok={kelompok}/>}
-            {data && praktikan && 
+            {data && !praktikan.dp_url && <Register kelompok={kelompok} praktikan={praktikan}/>}
+            {data && praktikan.dp_url && 
             <div className='p-4'>
                 <DashboardPraktikan dataPraktikan={praktikan}/>
             </div>}

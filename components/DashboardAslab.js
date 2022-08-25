@@ -8,9 +8,7 @@ const DashboardAslab = ({nama_lengkap, elka, fislab}) => {
 
     if(elka.length === 0 && fislab.length === 0) return <>Loading...</>
     
-    const currentPrak = elka.length === 0 ? fislab : elka
-    const allPrak = elka.concat(fislab)
-
+    const allPrak = elka.concat(fislab).sort((a,b) => a.minggu - b.minggu)
 
     return (
     <div className='container h-100'>
@@ -26,13 +24,6 @@ const DashboardAslab = ({nama_lengkap, elka, fislab}) => {
                         <tr>
                             <th scope='row' className='w-50'>Nama Lengkap</th>
                             <td className='w-50'>{nama_lengkap}</td>
-                        </tr>
-                        <tr>
-                            <th scope='row' rowSpan='2' className='align-middle'>Praktikum</th>
-                            <td>{elka.length > 0 ? <>{elka[0]?.judul_praktikum.nama_praktikum} ({elka[0].judul_praktikum.kode})</> : '-'}</td> 
-                        </tr> 
-                        <tr>
-                            <td>{fislab.length > 0 ? <>{fislab[0]?.judul_praktikum.nama_praktikum} ({fislab[0]?.judul_praktikum.kode})</> : '-'}</td>
                         </tr>
                         <tr>
                             <th scope='row'>Kelompok Elektronika</th>

@@ -5,26 +5,13 @@ import Image from 'next/image'
 
 
 const DashboardPraktikan = ({ dataPraktikan }) => {
-  const [praktikum, setPraktikum] = useState()
-
-  useEffect(() => {
-    axios.get('/api/praktikan/get_praktikum?kode_kelompok='+dataPraktikan.kode_kelompok)
-      .then(res => {
-        setPraktikum(res.data)
-        console.log(res.data)
-      })
-      .catch(e => console.log(e))
-
-  }, [dataPraktikan])
-
   const nilai = dataPraktikan.nilai
   
-  const jenisPraktikum = dataPraktikan.kode_kelompok.includes('ELKA') ? 'Elektronika' : 'Fisika Laboratorium 1'
 
   return (
     <div className='container'>
       <div className='row'>
-        <div className='col-md-2 text-center'>
+        <div className='col-md-4 text-center'>
           <Image src={`https://ik.imagekit.io/madyafisikaits/${dataPraktikan.nrp}.jpg`} className='img-thumbnail' alt="foto profil" width="150" height="225" />
         </div>
         <div className='col-md-6'>
@@ -36,7 +23,7 @@ const DashboardPraktikan = ({ dataPraktikan }) => {
             </thead>
             <tbody>
               <tr>
-                <th scope='row'>NRP</th>
+                <th scope='row' className='w-50'>NRP</th>
                 <td>{dataPraktikan?.nrp}</td>
               </tr>
               <tr>
@@ -44,12 +31,12 @@ const DashboardPraktikan = ({ dataPraktikan }) => {
                 <td>{dataPraktikan?.nama_lengkap}</td>
               </tr>
               <tr>
-                <th scope='row'>Praktikum</th>
-                <td>{jenisPraktikum}</td>
+                <th scope='row'>Kelompok Praktikum Elektronika</th>
+                <td>{dataPraktikan.praktikan_elka.kode_kelompok}</td>
               </tr>
               <tr>
-                <th scope='row'>Kelompok</th>
-                <td>{dataPraktikan.kode_kelompok}</td>
+                <th scope='row'>Kelompok Praktikum Fisika Laboratorium 1</th>
+                <td>{dataPraktikan.praktikan_fislab.kode_kelompok}</td>
               </tr>
             </tbody> 
           </table>
@@ -60,7 +47,7 @@ const DashboardPraktikan = ({ dataPraktikan }) => {
             <table className='table table-striped table-bordered align-middle text-center'>
               <thead>
                 <tr>
-                  <th scope='row' className='fs-4' colSpan='5'>Daftar Praktikum</th>
+                  <th scope='row' className='fs-4' colSpan='6'>Daftar Praktikum</th>
                 </tr>
                 <tr className='align-middle'>
                   <th scope='col'>Nama Praktikum</th>
@@ -72,24 +59,15 @@ const DashboardPraktikan = ({ dataPraktikan }) => {
                 </tr>
               </thead>
               <tbody>
-                { !praktikum && 
-                  <tr>
-                    <td>Loading...</td>
-                    <td>Loading...</td>
-                    <td>Loading...</td>
-                    <td>Loading...</td>
-                    <td>Loading...</td>
-                  </tr> 
-                }
-              {praktikum && praktikum?.map((prak, id) => 
+              {nilai?.map((prak, id) => 
                 <tr key={prak.id}>
                   
-                  <td>{prak.judul_praktikum.nama_praktikum}</td>
+                  <td>{prak.praktikum.judul_praktikum.nama_praktikum} ({prak.praktikum.kode_judul_praktikum})</td>
                   <td>{prak.aslab.nama_lengkap}</td>
                   <td>{prak.aslab.kontak}</td>
-                  <td>{prak.waktu_praktikum.id === 1 ? <>Belum diatur</> : dateFormat(prak.waktu_praktikum.waktu)}</td>
-                  <td><a href={prak.judul_praktikum.modul}><button className='btn btn-info text-white'>View</button></a></td>
-                  <td>{nilai[id].nilai_akhir === 0 && <>Belum Dinilai</>} {nilai[id].nilai_akhir !== 0 && <>{nilai[id].nilai_akhir}</>} </td>
+                  <td>{prak.praktikum.id_sesi === 1 ? <>Belum diatur</> : dateFormat(prak.praktikum.waktu_praktikum.waktu)}</td>
+                  <td><a href={prak.praktikum.judul_praktikum.modul}><button className='btn btn-info text-white'>View</button></a></td>
+                  <td>{prak.nilai_akhir === 0 ? 'Belum Dinilai' : prak.nilai_akhir} </td>
                 </tr>
                 )
               }

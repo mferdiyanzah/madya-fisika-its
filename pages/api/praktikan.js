@@ -15,33 +15,15 @@ export default async function handler(req, res){
     if (req.method === 'POST' && session){
         try {
             
-            const praktikan = await prisma.praktikan.create({
-                data: {
-                    email: data.email,
-                    nama_lengkap: data.nama_lengkap,
-                    nrp: data.nrp,
-                    kode_kelompok: data.kode_kelompok
-                }
-            })
-
-            const praktikum = await prisma.praktikum.findMany({
+            const praktikan = await prisma.user.update({
                 where: {
-                    kode_kelompok: praktikan.kode_kelompok
+                    email: session.user.email
                 },
-                include:{
-                    aslab: true
+                data: {
+                    dp_url: data.status
                 }
             })
-            
-            praktikum.map(async prak => {
-                await prisma.nilai.create({
-                    data: {
-                        nrp: praktikan.nrp,
-                        kode_aslab: prak.kode_aslab,
-                        id_praktikum: prak.id
-                    }
-                })
-            })         
+                    
             
             res.status(200).json('success')
         } catch(err){

@@ -13,7 +13,7 @@ const ImageWithFallback = (props) => {
                 setImgSrc(fallbackSrc);
             }}
             width="175" 
-            height="225"
+            style={{aspectRatio: '4/6'}}
             alt={src}
             className='rounded'
         />

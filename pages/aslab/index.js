@@ -26,6 +26,9 @@ export async function getServerSideProps(context){
         email: aslab[0].email
       }
     },
+    orderBy: {
+      minggu: 'asc'
+    },
     include: {
       waktu_praktikum: true,
       judul_praktikum: true
@@ -40,6 +43,9 @@ export async function getServerSideProps(context){
       kode_kelompok: {
         contains: 'FISLAB'
       }
+    },
+    orderBy: {
+      minggu: 'asc'
     },
     include: {
       waktu_praktikum: true,
@@ -63,7 +69,7 @@ const Index = ({ aslab, elka, fislab }) => {
   
 
   if(!aslab) router.push('/praktikan')
-  console.log(fislab)
+
   return (
     <div>
       <Head>
