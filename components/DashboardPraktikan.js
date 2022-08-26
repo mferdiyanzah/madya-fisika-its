@@ -5,7 +5,7 @@ import Image from 'next/image'
 
 
 const DashboardPraktikan = ({ dataPraktikan }) => {
-  const nilai = dataPraktikan.nilai
+  const nilai = dataPraktikan.nilai.sort((a, b) => a.praktikum.minggu - b.praktikum.minggu)
   
 
   return (
@@ -47,10 +47,11 @@ const DashboardPraktikan = ({ dataPraktikan }) => {
             <table className='table table-striped table-bordered align-middle text-center'>
               <thead>
                 <tr>
-                  <th scope='row' className='fs-4' colSpan='6'>Daftar Praktikum</th>
+                  <th scope='row' className='fs-4' colSpan='7'>Daftar Praktikum</th>
                 </tr>
                 <tr className='align-middle'>
                   <th scope='col'>Nama Praktikum</th>
+                  <th scope='col'>Minggu Praktikum</th>
                   <th scope='col'>Nama Asisten</th>
                   <th scope='col'>Kontak Asisten</th>
                   <th scope='col'>Jadwal Praktikum</th>
@@ -63,10 +64,11 @@ const DashboardPraktikan = ({ dataPraktikan }) => {
                 <tr key={prak.id}>
                   
                   <td>{prak.praktikum.judul_praktikum.nama_praktikum} ({prak.praktikum.kode_judul_praktikum})</td>
+                  <td>{prak.praktikum.minggu}</td>
                   <td>{prak.aslab.nama_lengkap}</td>
                   <td>{prak.aslab.kontak}</td>
                   <td>{prak.praktikum.id_sesi === 1 ? <>Belum diatur</> : dateFormat(prak.praktikum.waktu_praktikum.waktu)}</td>
-                  <td><a href={prak.praktikum.judul_praktikum.modul}><button className='btn btn-info text-white'>View</button></a></td>
+                  <td><a  target="_blank" rel="noopener noreferrer" href={prak.praktikum.judul_praktikum.modul}><button className='btn btn-info text-white'>View</button></a></td>
                   <td>{prak.nilai_akhir === 0 ? 'Belum Dinilai' : prak.nilai_akhir} </td>
                 </tr>
                 )

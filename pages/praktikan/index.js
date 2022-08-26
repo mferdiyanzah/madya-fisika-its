@@ -9,6 +9,7 @@ import Head from "next/head";
 import Loading from '../../components/Loading';
 import DashboardPraktikan from '../../components/DashboardPraktikan';
 import dateFormat from '../../helpers/dateFormat';
+import Error from '../error';
 
 
 export async function getServerSideProps(context){
@@ -27,7 +28,7 @@ export async function getServerSideProps(context){
                         include: {
                             judul_praktikum: true,
                             waktu_praktikum: true
-                        }
+                        },
                     }
                 }
             },
@@ -53,7 +54,8 @@ const Index = ({ praktikan, kelompok}) => {
     if (status !== 'loading' && !data){
         router.push('/')
     }
-    console.log(praktikan)
+    
+    if (!praktikan) return <Error/>
 
     return (
         <div>

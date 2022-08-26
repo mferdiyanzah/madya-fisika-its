@@ -15,13 +15,6 @@ import axios from 'axios'
 import Image from 'next/image'
 import loadingGif from '../../../images/mini_loading.gif'
 
-const AturJadwal = () => {
-    return (
-        <>
-            Atur Jadwal <button>Atur Sekarang</button>
-        </>
-    )
-}
 
 export const getServerSideProps = async (context) => {
     let kode_kelompok = context.query.kode_kelompok

@@ -1,6 +1,7 @@
 import React from 'react'
 import { signOut, useSession } from 'next-auth/react'
 import Cookies from 'js-cookie'
+import Link from 'next/link'
 
 const Navbar = ({ nama_lengkap }) => {
   return (
@@ -15,8 +16,18 @@ const Navbar = ({ nama_lengkap }) => {
             </button>
             <div className="collapse navbar-collapse justify-content-end" id="navbarTogglerDemo01">
                 <ul className="navbar-nav">
+                    {
+                        nama_lengkap ? 
+                        <li className="nav-item">
+                            <span className='active nav-link'>Selamat Datang, {nama_lengkap}. </span>
+                        </li> : ''
+                    }
+                    
                     <li className="nav-item">
-                        <span className='active nav-link'>Selamat Datang, {nama_lengkap}. </span>
+                        <span className='nav-link'><Link href='/'>Home</Link></span>
+                    </li>
+                    <li className="nav-item">
+                        <span className='nav-link'><Link href='/jadwal_keseluruhan'>Jadwal Keseluruhan</Link></span>
                     </li>
                     <li className="nav-item">
                         <a className="nav-link" onClick={(e) => {
