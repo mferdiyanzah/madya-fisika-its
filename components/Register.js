@@ -62,7 +62,6 @@ const Register = ({ praktikan }) => {
                     icon: 'success'
                 }).then(() => {
                     setLoading(false)
-                    router.reload()
                 })
             })
             .catch(err => setLoading(false))
