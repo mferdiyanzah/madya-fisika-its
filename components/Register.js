@@ -17,6 +17,7 @@ const Register = ({ praktikan }) => {
     const [loading, setLoading] = useState(false)
     const [selectedFile, setSelectedFile] = useState()
     const [preview, setPreview] = useState()
+    const [showHome, setShowHome] = useState(false)
 
 
     useEffect(() => {
@@ -41,6 +42,7 @@ const Register = ({ praktikan }) => {
 
 
     const createNewPraktikan = e =>{
+        e.preventDefault()
         setLoading(true)
         const imageKit = new ImageKit({
             urlEndpoint: 'https://ik.imagekit.io/madyafisikaits/',
@@ -61,12 +63,10 @@ const Register = ({ praktikan }) => {
                     text: 'Data anda telah sukses terbarui',
                     icon: 'success'
                 })
-            })
-            .catch(err => setLoading(false))
-            .finally(() => {
                 setLoading(false)
                 router.reload()
             })
+            .catch(err => setLoading(false))
     }
 
     return (
