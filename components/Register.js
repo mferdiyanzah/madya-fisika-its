@@ -60,9 +60,11 @@ const Register = ({ praktikan }) => {
                 Swal.fire({
                     text: 'Data anda telah sukses terbarui',
                     icon: 'success'
-                }).then(() => {
-                    setLoading(false)
                 })
+            })
+            .then(() => {
+                setLoading(false)
+                router.reload()
             })
             .catch(err => setLoading(false))
     }
