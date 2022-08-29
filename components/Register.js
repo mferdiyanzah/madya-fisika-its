@@ -65,7 +65,7 @@ const Register = ({ praktikan }) => {
                     router.reload()
                 })
             })
-            .then(err => setLoading(err))
+            .catch(err => setLoading(false))
     }
 
     return (
