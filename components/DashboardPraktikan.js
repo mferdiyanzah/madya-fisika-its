@@ -32,11 +32,11 @@ const DashboardPraktikan = ({ dataPraktikan }) => {
               </tr>
               <tr>
                 <th scope='row'>Kelompok Praktikum Elektronika</th>
-                <td>{dataPraktikan.praktikan_elka.kode_kelompok}</td>
+                <td>{dataPraktikan.praktikan_elka ? dataPraktikan.praktikan_elka.kode_kelompok: '-'}</td>
               </tr>
               <tr>
                 <th scope='row'>Kelompok Praktikum Fisika Laboratorium 1</th>
-                <td>{dataPraktikan.praktikan_fislab.kode_kelompok}</td>
+                <td>{dataPraktikan.praktikan_fislab ? dataPraktikan.praktikan_fislab.kode_kelompok : '-'}</td>
               </tr>
             </tbody> 
           </table>
