@@ -121,7 +121,6 @@ const Detail = ({aslab, praktikum, sesi}) => {
                 setLoading(false)
             })
     }
-    console.log(praktikum.aslab)
 
     if(status === 'loading') return <Loading/>
     else if (praktikum.aslab.email !== data.user.email) return <h3 className='text-center'>Anda tidak berhak mengakses halaman ini</h3>
