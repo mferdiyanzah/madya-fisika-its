@@ -58,6 +58,8 @@ const NilaiPraktikan = ({data}) => {
             })
     }
 
+    console.log(data)
+
     return (
         <div className='border border-1 my-3 p-2'>
             <div className='row'>
