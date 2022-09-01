@@ -14,10 +14,11 @@ import Swal from 'sweetalert2'
 import axios from 'axios'
 import Image from 'next/image'
 import loadingGif from '../../../images/mini_loading.gif'
+import Loading from '../../../components/Loading'
 
 
 export const getServerSideProps = async (context) => {
-    let kode_kelompok = context.query.kode_kelompok
+    const idPraktikum = context.query.id_praktikum
     const prisma = new PrismaClient()
     const session = await getSession(context)
     const aslab = await prisma.aslab.findFirst({
@@ -28,12 +29,10 @@ export const getServerSideProps = async (context) => {
 
     const praktikum = await prisma.praktikum.findFirst({
         where: {
-            kode_kelompok: kode_kelompok,
-            aslab: {
-                email: session?.user.email
-            }
+            id: parseInt(idPraktikum),
         },
         include: {
+            aslab: true,
             nilai: {
                 orderBy: {
                     nrp: 'asc'
@@ -122,45 +121,46 @@ const Detail = ({aslab, praktikum, sesi}) => {
                 setLoading(false)
             })
     }
+    console.log(praktikum.aslab)
 
-    return (
-        <div>
-            <Head>
-                <title>{title}</title>
-            </Head>
-            <Navbar nama_lengkap={aslab.nama_lengkap} />
-
-            {!praktikum && <h3 className='text-center'>Anda tidak berhak mengakses halaman ini</h3>}
-
-            {praktikum && 
-            <div className='container p-2'>
-                <h2>Kelompok {praktikum.kode_kelompok}</h2>
-                <hr/>
-                <div>
-                    <h5>Jadwal Praktikum:</h5> {praktikum.id_sesi === 1 ? <>Anda Belum Mengatur Jadwal <button className='btn btn-primary' onClick={() => setShowJadwal(!showJadwal)}>Atur Sekarang</button></>: dateFormat(praktikum.waktu_praktikum.waktu)}
-
-                    {showJadwal && 
-                        <form className='row' onSubmit={updateSesi}>
-                            <div className="my-2 col col-md-6">
-                                <label htmlFor="nama_lengkap" className="form-label">Pilih Sesi</label>
-                                <Select placeholder='Anda Belum Memilih' options={option} onChange={e => setIdSesi(e.value)} />
-                                <button type='submit' className='btn btn-secondary my-2'>{loading ? <Image src={loadingGif} width="20" height="20" alt='loading'/> : 'Update Jadwal'}</button>
-                            </div>
-                        </form>
-                    }
+    if(status === 'loading') return <Loading/>
+    else if (praktikum.aslab.email !== data.user.email) return <h3 className='text-center'>Anda tidak berhak mengakses halaman ini</h3>
+    else{
+        return (
+            <div>
+                <Head>
+                    <title>{title}</title>
+                </Head>
+                <Navbar nama_lengkap={aslab.nama_lengkap} />
+                <div className='container p-2'>
+                    <h2>Kelompok {praktikum.kode_kelompok}</h2>
+                    <hr/>
+                    <div>
+                        <h5>Jadwal Praktikum:</h5> {praktikum.id_sesi === 1 ? <>Anda Belum Mengatur Jadwal <button className='btn btn-primary' onClick={() => setShowJadwal(!showJadwal)}>Atur Sekarang</button></>: dateFormat(praktikum.waktu_praktikum.waktu)}
+    
+                        {showJadwal && 
+                            <form className='row' onSubmit={updateSesi}>
+                                <div className="my-2 col col-md-6">
+                                    <label htmlFor="nama_lengkap" className="form-label">Pilih Sesi</label>
+                                    <Select placeholder='Anda Belum Memilih' options={option} onChange={e => setIdSesi(e.value)} />
+                                    <button type='submit' className='btn btn-secondary my-2'>{loading ? <Image src={loadingGif} width="20" height="20" alt='loading'/> : 'Update Jadwal'}</button>
+                                </div>
+                            </form>
+                        }
+                    </div>
+                    <hr/>
+                    
+                    <h5>Data Praktikan</h5>
+                    {praktikum.nilai.map(prak => 
+                        <NilaiPraktikan key={prak.id} data={prak} />
+                    )}
+                    <hr/>
                 </div>
-                <hr/>
-                
-                <h5>Data Praktikan</h5>
-                {praktikum.nilai.map(prak => 
-                    <NilaiPraktikan key={prak.id} data={prak} />
-                )}
-                <hr/>
-            </div>}
-
-            <Footer/>       
-        </div>
-    )
+    
+                <Footer/>       
+            </div>
+        )
+    }
 }
 
 export default Detail

@@ -59,7 +59,7 @@ const DashboardAslab = ({nama_lengkap, elka, fislab}) => {
                         <td>{prak.judul_praktikum.nama_praktikum}</td>
                         <td>{prak.minggu}</td>
                         <td>{prak.waktu_praktikum.id === 1 ? 'Belum Diatur' : dateFormat(prak.waktu_praktikum.waktu)}</td>
-                        <td><Link href={`/aslab/details?kode_kelompok=${prak.kode_kelompok}`}><button className='btn btn-dark'>Detail</button></Link></td>
+                        <td><Link href={`/aslab/details?id_praktikum=${prak.id}`}><button className='btn btn-dark'>Detail</button></Link></td>
                     </tr>
                 )
             }
