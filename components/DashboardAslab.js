@@ -45,6 +45,7 @@ const DashboardAslab = ({nama_lengkap, elka, fislab}) => {
                 </tr>
                 <tr className='align-middle'>
                     <th scope='col' className='w-25'>Kode Kelompok</th>
+                    <th scope='col' className='w-25'>Judul Praktikum</th>
                     <th scope='col' className='w-25'>Minggu Praktikum ke-</th>
                     <th scope='col' className='w-25'>Jadwal Praktikum</th>
                     <th scope='col' className='w-25'>Detail</th>
@@ -55,6 +56,7 @@ const DashboardAslab = ({nama_lengkap, elka, fislab}) => {
                 allPrak.map(prak =>
                     <tr key={prak.id}>
                         <td>{prak.kode_kelompok}</td>
+                        <td>{prak.judul_praktikum.nama_praktikum}</td>
                         <td>{prak.minggu}</td>
                         <td>{prak.waktu_praktikum.id === 1 ? 'Belum Diatur' : dateFormat(prak.waktu_praktikum.waktu)}</td>
                         <td><Link href={`/aslab/details?kode_kelompok=${prak.kode_kelompok}`}><button className='btn btn-dark'>Detail</button></Link></td>
