@@ -74,7 +74,7 @@ const NilaiPraktikan = ({data}) => {
                         <tbody>
                         <tr>
                             <th scope='row'>NRP</th>
-                            <td>{data.praktikan.nrp}</td>
+                            <td>{parseInt(data.praktikan?.nrp)}</td>
                         </tr>
                         <tr>
                             <th scope='row'>Nama Lengkap</th>
