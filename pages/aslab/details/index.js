@@ -63,7 +63,7 @@ export const getServerSideProps = async (context) => {
 
     return {
         props: {
-            praktikum: JSON.parse(JSON.stringify(praktikum)),
+            praktikum: JSON.stringify(praktikum),
             aslab: aslab,
             sesi: JSON.parse(JSON.stringify(sesi))
         }
