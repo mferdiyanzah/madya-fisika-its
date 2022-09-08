@@ -84,13 +84,13 @@ const Detail = ({aslab, praktikum, sesi}) => {
     useEffect(() => {
         const availSession = sesi.filter(s => s._count.praktikum < 3)
         let newOption = []
-        for (let i = 0; i<availSession.length; i++){
+        availSession.map(sess => {
             const newSession = {
-                value: sesi[i].id,
-                label: dateFormat(availSession[i].waktu)
+                value: sess.id,
+                label: dateFormat(sess.waktu)
             }
             newOption.push(newSession)
-        }
+        })
         setOption(newOption)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
