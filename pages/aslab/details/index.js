@@ -15,6 +15,7 @@ import axios from 'axios'
 import Image from 'next/image'
 import loadingGif from '../../../images/mini_loading.gif'
 import Loading from '../../../components/Loading'
+import Jadwal from '../../../components/Jadwal'
 
 
 export const getServerSideProps = async (context) => {
@@ -53,11 +54,7 @@ export const getServerSideProps = async (context) => {
             }
         },
         include: {
-            _count: {
-                select: {
-                    praktikum: true
-                }
-            },
+            praktikum: true
         }
     })
 
@@ -81,8 +78,14 @@ const Detail = ({aslab, praktikum, sesi}) => {
     if(!data && status !== 'loading') router.push('/')
     if(!aslab) router.push('/praktikan')
 
+    let availSession
+    if (aslab.kode_aslab.includes('P')) {
+        availSession = sesi.filter(s => s.praktikum.length < 3 && s.praktikum.filter(p => p.kode_aslab.includes('P')).length < 2 ).sort((a, b) => new Date(a.waktu) - new Date(b.waktu))
+    } else {
+        availSession = sesi.filter(s => s.praktikum.length < 3).sort((a, b) => new Date(a.waktu) - new Date(b.waktu))
+    }
+    
     useEffect(() => {
-        const availSession = sesi.filter(s => s._count.praktikum < 3).sort((a, b) => new Date(a.waktu) - new Date(b.waktu))
         let newOption = []
         availSession.map(sess => {
             const newSession = {
@@ -92,7 +95,6 @@ const Detail = ({aslab, praktikum, sesi}) => {
             newOption.push(newSession)
         })
         setOption(newOption)
-        console.log(praktikum)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -142,14 +144,16 @@ const Detail = ({aslab, praktikum, sesi}) => {
                             : <>{dateFormat(praktikum.waktu_praktikum.waktu)} <button className='btn btn-primary' onClick={() => setShowUpdateJadwal(!showUpdateJadwal)}>Ganti Jadwal</button></>
                         }
 
-                        {showUpdateJadwal && 
-                            <form className='row' onSubmit={updateSesi}>
-                                <div className="my-2 col col-md-6">
-                                    <label htmlFor="nama_lengkap" className="form-label">Pilih Sesi</label>
-                                    <Select value={praktikum.id_sesi} options={option} onChange={e => setIdSesi(e.value)} />
-                                    <button type='submit' className='btn btn-secondary my-2'>{loading ? <Image src={loadingGif} width="20" height="20" alt='loading'/> : 'Update Jadwal'}</button>
-                                </div>
-                            </form>
+                        {showUpdateJadwal &&
+                            <div> 
+                                <form className='row' onSubmit={updateSesi}>
+                                    <div className="my-2 col col-md-6">
+                                        <label htmlFor="nama_lengkap" className="form-label">Pilih Sesi</label>
+                                        <Select placeholder={praktikum.id_sesi === 1 ? 'Silahkan Pilih' : dateFormat(praktikum.waktu_praktikum.waktu)} options={option} onChange={e => setIdSesi(e.value)} />
+                                        <button type='submit' className='btn btn-secondary my-2'>{loading ? <Image src={loadingGif} width="20" height="20" alt='loading'/> : 'Update Jadwal'}</button>
+                                    </div>
+                                </form>
+                            </div>
                         }
                     </div>
                     <hr/>

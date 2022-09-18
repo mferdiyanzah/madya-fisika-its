@@ -14,7 +14,11 @@ export async function getServerSideProps(context){
             }
         },
         include:{
-            praktikum: true
+            praktikum:{
+                include: {
+                    aslab: true
+                }
+            }
         }
     })
     

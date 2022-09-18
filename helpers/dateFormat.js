@@ -38,5 +38,5 @@ export default function dateFormat(time){
     var tampilTanggal = hari + ", " + tanggal + " " + bulan + " " + tahun
     var tampilWaktu = addZero(jam) + ":" + addZero(menit) 
 
-    return 'Jam '+tampilWaktu + ' WIB - ' + tampilTanggal 
+    return tampilTanggal + '- Jam '+tampilWaktu + ' WIB'
 }

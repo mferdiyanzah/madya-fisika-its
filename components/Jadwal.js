@@ -7,7 +7,7 @@ const Jadwal = ({sesi}) => {
         <h6>{dateFormat(sesi.waktu)}</h6>
             <ul>
                 {sesi.praktikum.map(prak => (
-                    <li key={prak.id}>{prak.kode_kelompok} ({prak.kode_aslab})</li>
+                    <li key={prak.id}>{prak.kode_kelompok} ({prak.aslab.nama_lengkap})</li>
                 ))}
             </ul>
     </li>
