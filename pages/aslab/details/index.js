@@ -57,7 +57,7 @@ export const getServerSideProps = async (context) => {
                 select: {
                     praktikum: true
                 }
-            }
+            },
         }
     })
 
@@ -72,7 +72,7 @@ export const getServerSideProps = async (context) => {
 
 const Detail = ({aslab, praktikum, sesi}) => {
     const router = useRouter()
-    const [showJadwal, setShowJadwal] = useState(false)
+    const [showUpdateJadwal, setShowUpdateJadwal] = useState(false)
     const [option, setOption] = useState([])
     const {data, status} = useSession()
     const [idSesi, setIdSesi] = useState()
@@ -82,7 +82,7 @@ const Detail = ({aslab, praktikum, sesi}) => {
     if(!aslab) router.push('/praktikan')
 
     useEffect(() => {
-        const availSession = sesi.filter(s => s._count.praktikum < 3)
+        const availSession = sesi.filter(s => s._count.praktikum < 3).sort((a, b) => new Date(a.waktu) - new Date(b.waktu))
         let newOption = []
         availSession.map(sess => {
             const newSession = {
@@ -92,6 +92,7 @@ const Detail = ({aslab, praktikum, sesi}) => {
             newOption.push(newSession)
         })
         setOption(newOption)
+        console.log(praktikum)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -135,13 +136,17 @@ const Detail = ({aslab, praktikum, sesi}) => {
                     <h2>Kelompok {praktikum.kode_kelompok}</h2>
                     <hr/>
                     <div>
-                        <h5>Jadwal Praktikum:</h5> {praktikum.id_sesi === 1 ? <>Anda Belum Mengatur Jadwal <button className='btn btn-primary' onClick={() => setShowJadwal(!showJadwal)}>Atur Sekarang</button></>: dateFormat(praktikum.waktu_praktikum.waktu)}
-    
-                        {showJadwal && 
+                        <h5>Jadwal Praktikum:</h5> {
+                        praktikum.id_sesi === 1 
+                            ? <>Anda Belum Mengatur Jadwal <button className='btn btn-primary' onClick={() => setShowUpdateJadwal(!showUpdateJadwal)}>Atur Sekarang</button></>
+                            : <>{dateFormat(praktikum.waktu_praktikum.waktu)} <button className='btn btn-primary' onClick={() => setShowUpdateJadwal(!showUpdateJadwal)}>Ganti Jadwal</button></>
+                        }
+
+                        {showUpdateJadwal && 
                             <form className='row' onSubmit={updateSesi}>
                                 <div className="my-2 col col-md-6">
                                     <label htmlFor="nama_lengkap" className="form-label">Pilih Sesi</label>
-                                    <Select placeholder='Anda Belum Memilih' options={option} onChange={e => setIdSesi(e.value)} />
+                                    <Select value={praktikum.id_sesi} options={option} onChange={e => setIdSesi(e.value)} />
                                     <button type='submit' className='btn btn-secondary my-2'>{loading ? <Image src={loadingGif} width="20" height="20" alt='loading'/> : 'Update Jadwal'}</button>
                                 </div>
                             </form>
