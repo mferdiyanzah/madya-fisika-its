@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 import Swal from 'sweetalert2';
 import axios from 'axios';
@@ -9,7 +9,7 @@ import ImageWithFallback from './ImageWithFallback';
 import RenderError from './RenderError';
 
 const NilaiPraktikan = ({data}) => {
-    const { register, handleSubmit, formState: {errors}, getValues  } = useForm({
+    const { register, handleSubmit, formState: {errors}, setValue, getValues  } = useForm({
         defaultValues: {
             prelab: data.prelab,
             inlab: data.inlab,
@@ -21,26 +21,25 @@ const NilaiPraktikan = ({data}) => {
             post_lab: data.post_lab,
             ketepatan_waktu: data.ketepatan_waktu,
             abstrak: data.abstrak,
-            post_lab: data.jawab_post_lab
+            post_lab: data.jawab_post_lab,
+            nilai_akhir: data.nilai_akhir
         }
     })
 
-    const [nilaiTotal, setNilaiTotal] = useState()
     const [disabled, setDisabled] = useState(true)
-    const [nilaiAkhir, setNilaiAkhir] = useState(data.nilai_akhir)
     const [loading, setLoading] = useState(false)
 
     const hitungNilaiAkhir = () => {
         const nilai = getValues()
         const nilaiPost = ((nilai.pendahuluan*0.06)+(nilai.metodologi*0.06)+(nilai.hasil_diskusi*0.25)+(nilai.kesimpulan*0.15)+(nilai.format*0.13)+(nilai.post_lab*0.2)+(nilai.ketepatan_waktu*0.5)+(nilai.abstrak*0.1))
         const nilaiAkhirTemp = (parseInt(nilai.prelab) * 2) + (parseInt(nilai.inlab) * 2) + (nilaiPost * 6)
-        setNilaiAkhir(nilaiAkhirTemp.toFixed(2))
-        let nilaiTotalTemp = getValues()
-        setNilaiTotal({...nilaiTotalTemp, id: data.id, nilai_akhir: nilaiAkhir})
+        setValue('nilai_akhir', nilaiAkhirTemp)
     }
  
     const updateScore = (e) => {
         setLoading(true)
+        let nilaiTotal = getValues()
+        nilaiTotal = {...nilaiTotal, id: data.id}
         axios.post('/api/aslab/update_nilai', nilaiTotal)
             .then(() => {
                 Swal.fire({
@@ -212,7 +211,7 @@ const NilaiPraktikan = ({data}) => {
 
                     <div className="col-6 col-md-2 my-2">
                         <label htmlFor="nama_lengkap" className="form-label text-danger">Nilai Akhir</label>
-                        <input className='form-control' value={nilaiAkhir} disabled={true}/>
+                        <input className='form-control' disabled={true} {...register("nilai_akhir")}/>
                     </div>
 
                 </div>
