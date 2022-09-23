@@ -77,9 +77,10 @@ const Detail = ({aslab, praktikum, sesi}) => {
     
     if(!data && status !== 'loading') router.push('/')
     if(!aslab) router.push('/praktikan')
+    console.log(praktikum)
 
     let availSession
-    if (aslab.kode_aslab.includes('P')) {
+    if (praktikum.kode_aslab.includes('P')) {
         availSession = sesi.filter(s => s.praktikum.length < 3 && s.praktikum.filter(p => p.kode_aslab.includes('P')).length < 2 ).sort((a, b) => new Date(a.waktu) - new Date(b.waktu))
     } else {
         availSession = sesi.filter(s => s.praktikum.length < 3).sort((a, b) => new Date(a.waktu) - new Date(b.waktu))
