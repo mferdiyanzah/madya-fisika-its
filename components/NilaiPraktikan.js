@@ -33,7 +33,7 @@ const NilaiPraktikan = ({data}) => {
         const nilai = getValues()
         const nilaiPost = ((nilai.pendahuluan*0.06)+(nilai.metodologi*0.06)+(nilai.hasil_diskusi*0.25)+(nilai.kesimpulan*0.15)+(nilai.format*0.13)+(nilai.post_lab*0.2)+(nilai.ketepatan_waktu*0.5)+(nilai.abstrak*0.1))
         const nilaiAkhirTemp = (parseInt(nilai.prelab) * 2) + (parseInt(nilai.inlab) * 2) + (nilaiPost * 6)
-        setValue('nilai_akhir', nilaiAkhirTemp)
+        setValue('nilai_akhir', Number(nilaiAkhirTemp).toFixed(2))
     }
  
     const updateScore = (e) => {

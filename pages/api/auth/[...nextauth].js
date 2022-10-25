@@ -13,7 +13,7 @@ export default NextAuth({
         })
     ],
     session: {
-        maxAge: 30 * 60
+        maxAge: 2 * 60 * 60
     },
     secret: process.env.NEXT_PUBLIC_SECRET,
     callbacks: {

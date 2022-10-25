@@ -69,7 +69,7 @@ const DashboardPraktikan = ({ dataPraktikan }) => {
                   <td>{prak.aslab.kontak}</td>
                   <td>{prak.praktikum.id_sesi === 1 ? <>Belum diatur</> : dateFormat(prak.praktikum.waktu_praktikum.waktu)}</td>
                   <td><a  target="_blank" rel="noopener noreferrer" href={prak.praktikum.judul_praktikum.modul}><button className='btn btn-info text-white'>View</button></a></td>
-                  <td>{prak.nilai_akhir === 0 ? 'Belum Dinilai' : prak.nilai_akhir} </td>
+                  <td>{prak.nilai_akhir === 0 ? 'Belum Dinilai' : Number(prak.nilai_akhir).toFixed(2)} </td>
                 </tr>
                 )
               }

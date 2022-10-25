@@ -37,6 +37,9 @@ const DashboardAslab = ({nama_lengkap, elka, fislab}) => {
                 </table>
             </div>
         </div>
+
+        <Link href={`/aslab/rekapitulasi_nilai`}><button className='btn btn-info text-white mb-4'>Rekapitulasi Nilai</button></Link>
+
         <div className='table-responsive-md'>
             <table className='table table-striped table-bordered align-middle text-center'>
             <thead>
