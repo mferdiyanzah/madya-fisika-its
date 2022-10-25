@@ -10,7 +10,7 @@ const RekapitulasiNilai = ({kumpulan_nilai}) => {
             <hr/>
             <div className='table-responsive-md my-3'>
             {nilai.map(n => 
-                <div>
+                <div key={n.id}>
                     <h4>{n.kode_kelompok} --- Minggu Praktikum {n.minggu} <Link href={`/aslab/details?id_praktikum=${n.id}`}><button className='btn btn-dark'>Detail</button></Link></h4>
                     <table className='table table-bordered align-middle text-center'>
                         <thead>
