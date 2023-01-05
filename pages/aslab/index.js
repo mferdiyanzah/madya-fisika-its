@@ -74,6 +74,7 @@ const Index = ({ aslab, elka, fislab }) => {
       <Head>
         <title>Asisten Praktikum | Laboratorium Fisika Madya</title>
       </Head>
+      test
       <Navbar nama_lengkap={aslab[0].nama_lengkap} />
       <DashboardAslab
         nama_lengkap={aslab[0].nama_lengkap}
