@@ -81,7 +81,7 @@ const Index = ({ aslab, elka, fislab }) => {
         elka={elka}
         fislab={fislab}
       />
-      test
+      test22
       <Footer />
     </div>
   );
